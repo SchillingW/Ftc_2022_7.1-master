@@ -34,4 +34,9 @@ public class MotorWrap {
         tele.addData("init motor complete", name);
         tele.update();
     }
+
+    // terminate device
+    public void stop() {
+        motor.set(0);
+    }
 }

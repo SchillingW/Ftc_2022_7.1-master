@@ -38,4 +38,14 @@ public class MechDriveWrap {
         tele.addData("init mech drive complete", name);
         tele.update();
     }
+
+    // terminate device
+    public void stop() {
+        driveTrain.stop();
+    }
+
+    // run continuously
+    public void run(double x, double y, double turn, double heading) {
+        driveTrain.driveFieldCentric(x, y, turn, heading);
+    }
 }

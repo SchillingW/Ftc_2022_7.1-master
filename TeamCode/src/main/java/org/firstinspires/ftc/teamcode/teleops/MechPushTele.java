@@ -27,6 +27,12 @@ public class MechPushTele extends OpMode {
     public void loop() {
 
         // run drive train
-        robot.driveTrain.driveTrain.driveRobotCentric(pad1.getLeftX(), pad1.getLeftY(), pad1.getRightX());
+        robot.driveTrain.run(pad1.getLeftX(), pad1.getLeftY(), pad1.getRightX(), robot.gyro.getHeading());
+    }
+
+    // runs on termination
+    @Override
+    public void stop() {
+        robot.stop();
     }
 }

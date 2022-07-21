@@ -24,6 +24,3 @@ public class MiniBot {
         drive = new DifferentialDrive(new Motor(map, "left"), new Motor(map, "right"));
     }
 }
-
-
-

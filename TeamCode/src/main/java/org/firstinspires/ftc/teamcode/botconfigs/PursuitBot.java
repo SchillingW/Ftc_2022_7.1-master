@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.botconfigs;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -19,9 +20,14 @@ public class PursuitBot {
     // odometry device
     public HolonomicOdometry odometry;
 
+    // hardware specifications
+    public double encoderTicksPerRotation = 8192;
+    public double wheelDiameter = 2.5;
+    public double wheelCircumference = wheelDiameter * Math.PI;
+
     // robot type data
-    public double encoderTicksPerInch = 0;
-    public double encoderTrackWidth = 0;
+    public double encoderTicksPerInch = encoderTicksPerRotation / wheelCircumference;
+    public double encoderTrackWidth = 20;
     public double encoderWheelOffset = 0;
 
     // initialize devices
@@ -38,11 +44,20 @@ public class PursuitBot {
                 new Motor(map, "motorBR"));
 
         // initialize odometry
+        Motor encoderL = new Motor(map, "motorFL");
+        Motor encoderR = new Motor(map, "motorFR");
+        Motor encoderH = new Motor(map, "motorBL");
         odometry = new HolonomicOdometry(
-                getSupplier(new Motor(map, "motorFL")),
-                getSupplier(new Motor(map, "motorFR")),
-                getSupplier(new Motor(map, "motorBL")),
+                getSupplier(encoderL),
+                getSupplier(encoderR),
+                getSupplier(encoderH),
                 encoderTrackWidth, encoderWheelOffset);
+
+        // orient to home
+        encoderL.resetEncoder();
+        encoderR.resetEncoder();
+        encoderH.resetEncoder();
+        odometry.updatePose();
     }
 
     // return double supplier representing motor value in inches

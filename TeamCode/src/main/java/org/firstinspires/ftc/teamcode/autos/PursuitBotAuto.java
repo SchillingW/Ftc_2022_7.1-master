@@ -18,11 +18,11 @@ public class PursuitBotAuto extends LinearOpMode {
     public PursuitBot robot;
 
     // movement parameters
-    public double movementSpeed = 0;
-    public double turnSpeed = 0;
-    public double followRadius = 0;
-    public double positionBuffer = 0;
-    public double rotationBuffer = 0;
+    public double movementSpeed = 1;
+    public double turnSpeed = 1;
+    public double followRadius = 1;
+    public double positionBuffer = 1;
+    public double rotationBuffer = 1;
 
     @Override
     public void runOpMode() {

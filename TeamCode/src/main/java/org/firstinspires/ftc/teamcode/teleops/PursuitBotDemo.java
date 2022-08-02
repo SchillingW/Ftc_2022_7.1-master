@@ -22,11 +22,11 @@ public class PursuitBotDemo extends LinearOpMode {
     public ArrayList<Pose2d> recording;
 
     // movement parameters
-    public double movementSpeed = 0;
-    public double turnSpeed = 0;
-    public double followRadius = 0;
-    public double positionBuffer = 0;
-    public double rotationBuffer = 0;
+    public double movementSpeed = 1;
+    public double turnSpeed = 1;
+    public double followRadius = 1;
+    public double positionBuffer = 1;
+    public double rotationBuffer = 1;
 
     @Override
     public void runOpMode() {
@@ -51,16 +51,29 @@ public class PursuitBotDemo extends LinearOpMode {
     // behaviour for robot driving and user path recording
     public void RecordPath() {
 
+        // debug
+        telemetry.addData("state", "record path");
+        telemetry.update();
+
         // reset recorded poses
         recording = new ArrayList<>();
         boolean recordInputLast = gamepad1.b;
 
         // keep looping while program is running and a is not pressed
-        while (opModeIsActive() && !gamepad1.a) {
+        while (opModeIsActive() && (!gamepad1.a || recording.size() < 1)) {
 
-            // drive based on
+            // debug
+            telemetry.addData("state", "record path");
+            telemetry.addData("point count", recording.size());
+            telemetry.addData("current pose", robot.odometry.getPose());
+            telemetry.update();
+
+            // drive based on controller input
             robot.drive.driveRobotCentric(
-                    gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+                    gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+
+            // update robot position
+            robot.odometry.updatePose();
 
             // add current pose to recording if b pressed
             boolean recordInputNew = gamepad1.b;
@@ -74,6 +87,10 @@ public class PursuitBotDemo extends LinearOpMode {
 
     // follows recorded path with pure pursuit
     public void FollowPath() {
+
+        // debug
+        telemetry.addData("state", "follow path");
+        telemetry.update();
 
         // check that program is running
         if (opModeIsActive()) {
@@ -102,6 +119,10 @@ public class PursuitBotDemo extends LinearOpMode {
 
     // returns to origin position with pure pursuit
     public void ReturnHome() {
+
+        // debug
+        telemetry.addData("state", "return home");
+        telemetry.update();
 
         // check that program is running
         if (opModeIsActive()) {

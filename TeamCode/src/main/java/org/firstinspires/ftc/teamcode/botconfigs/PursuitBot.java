@@ -16,9 +16,16 @@ public class PursuitBot {
 
     // mecanum wheel drive train
     public MecanumDrive drive;
+    public Motor motorFL;
+    public Motor motorFR;
+    public Motor motorBL;
+    public Motor motorBR;
 
     // odometry device
     public HolonomicOdometry odometry;
+    public DoubleSupplier encoderL;
+    public DoubleSupplier encoderR;
+    public DoubleSupplier encoderH;
 
     // hardware specifications
     public double encoderTicksPerRotation = 8192;
@@ -37,33 +44,32 @@ public class PursuitBot {
         this.tele = tele;
 
         // initialize drive train
-        drive = new MecanumDrive(
-                new Motor(map, "motorFL"),
-                new Motor(map, "motorFR"),
-                new Motor(map, "motorBL"),
-                new Motor(map, "motorBR"));
+        motorFL = new Motor(map, "motorFL");
+        motorFR = new Motor(map, "motorFR");
+        motorBL = new Motor(map, "motorBL");
+        motorBR = new Motor(map, "motorBR");
+        drive = new MecanumDrive(motorFL, motorFR, motorBL, motorBR);
 
         // initialize odometry
-        Motor encoderL = new Motor(map, "motorFL");
-        Motor encoderR = new Motor(map, "motorFR");
-        Motor encoderH = new Motor(map, "motorBL");
+        encoderL = getSupplier(motorFL, -1);
+        encoderR = getSupplier(motorFR, 1);
+        encoderH = getSupplier(motorBL, -1);
         odometry = new HolonomicOdometry(
-                getSupplier(encoderL),
-                getSupplier(encoderR),
-                getSupplier(encoderH),
+                encoderL, encoderR, encoderH,
                 encoderTrackWidth, encoderWheelOffset);
 
         // orient to home
-        encoderL.resetEncoder();
-        encoderR.resetEncoder();
-        encoderH.resetEncoder();
+        motorFL.resetEncoder();
+        motorFR.resetEncoder();
+        motorBL.resetEncoder();
+        motorBR.resetEncoder();
         odometry.updatePose();
     }
 
     // return double supplier representing motor value in inches
-    public DoubleSupplier getSupplier(Motor encoder) {
+    public DoubleSupplier getSupplier(Motor encoder, float coefficient) {
 
         // convert motor ticks to inches
-        return () -> encoder.getCurrentPosition() / encoderTicksPerInch;
+        return () -> encoder.getCurrentPosition() / encoderTicksPerInch * coefficient;
     }
 }

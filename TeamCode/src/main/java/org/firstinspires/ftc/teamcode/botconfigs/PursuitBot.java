@@ -6,13 +6,15 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.hardware.HoloOdomFlip;
+
 import java.util.function.DoubleSupplier;
 
 // mecanum drive bot with odometry for Pure Pursuit
 public class PursuitBot {
 
     // debugging device
-    public Telemetry tele;
+    public  Telemetry tele;
 
     // mecanum wheel drive train
     public MecanumDrive drive;
@@ -22,7 +24,7 @@ public class PursuitBot {
     public Motor motorBR;
 
     // odometry device
-    public HolonomicOdometry odometry;
+    public HoloOdomFlip odometry;
     public DoubleSupplier encoderL;
     public DoubleSupplier encoderR;
     public DoubleSupplier encoderH;
@@ -54,7 +56,7 @@ public class PursuitBot {
         encoderL = getSupplier(motorFL, -1);
         encoderR = getSupplier(motorFR, 1);
         encoderH = getSupplier(motorBL, -1);
-        odometry = new HolonomicOdometry(
+        odometry = new HoloOdomFlip(
                 encoderL, encoderR, encoderH,
                 encoderTrackWidth, encoderWheelOffset);
 

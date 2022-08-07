@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleops;
 
+import com.arcrobotics.ftclib.command.PurePursuitCommand;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.purepursuit.Path;
 import com.arcrobotics.ftclib.purepursuit.Waypoint;
@@ -51,49 +52,45 @@ public class PursuitBotDemo extends LinearOpMode {
     // behaviour for robot driving and user path recording
     public void RecordPath() {
 
-        // debug
-        telemetry.addData("state", "record path");
-        telemetry.update();
-
-        // reset recorded poses
-        recording = new ArrayList<>();
-        boolean recordInputLast = gamepad1.b;
-
-        // keep looping while program is running and a is not pressed
-        while (opModeIsActive() && (!gamepad1.a || recording.size() < 1)) {
+        // check that program is running
+        if (opModeIsActive()) {
 
             // debug
-            telemetry.addData("state", "record path");
-            telemetry.addData("point count", recording.size());
-            telemetry.addData("current pose", robot.odometry.getPose());
-            telemetry.update();
+            DebugPartial("record path");
 
-            // drive based on controller input
-            robot.drive.driveRobotCentric(
-                    gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+            // reset recorded poses
+            recording = new ArrayList<>();
+            boolean recordInputLast = gamepad1.b;
 
-            // update robot position
-            robot.odometry.updatePose();
+            // keep looping while program is running and a is not pressed
+            while (opModeIsActive() && (!gamepad1.a || recording.size() < 1)) {
 
-            // add current pose to recording if b pressed
-            boolean recordInputNew = gamepad1.b;
-            if (recordInputNew && !recordInputLast) recording.add(robot.odometry.getPose());
-            recordInputLast = recordInputNew;
+                // debug
+                DebugFull("record path");
+
+                // drive based on controller input
+                robot.drive.driveRobotCentric(
+                        gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+
+                // add current pose to recording if b pressed
+                boolean recordInputNew = gamepad1.b;
+                if (recordInputNew && !recordInputLast) recording.add(robot.odometry.getPose());
+                recordInputLast = recordInputNew;
+            }
+
+            // stop drive train
+            robot.drive.stop();
         }
-
-        // stop drive train
-        robot.drive.stop();
     }
 
     // follows recorded path with pure pursuit
     public void FollowPath() {
 
-        // debug
-        telemetry.addData("state", "follow path");
-        telemetry.update();
-
         // check that program is running
         if (opModeIsActive()) {
+
+            // debug
+            DebugPartial("follow path");
 
             // create start and end waypoints from current pose to last pose in recording
             Waypoint[] points = new Waypoint[recording.size() + 1];
@@ -108,24 +105,20 @@ public class PursuitBotDemo extends LinearOpMode {
             }
 
             // follow path formed by waypoints
-            Path path = new Path(points);
-            path.init();
-            path.followPath(robot.drive, robot.odometry);
-
-            // wait at home for a second
-            sleep(1000);
+            PurePursuitCommand command = new PurePursuitCommand(
+                    robot.drive, robot.odometry, points);
+            RunCommand(command, "follow path");
         }
     }
 
     // returns to origin position with pure pursuit
     public void ReturnHome() {
 
-        // debug
-        telemetry.addData("state", "return home");
-        telemetry.update();
-
         // check that program is running
         if (opModeIsActive()) {
+
+            // debug
+            DebugPartial("return home");
 
             // create start and end waypoints from current pose to origin pose
             Waypoint start = new StartWaypoint(robot.odometry.getPose());
@@ -133,12 +126,40 @@ public class PursuitBotDemo extends LinearOpMode {
                     movementSpeed, turnSpeed, followRadius, positionBuffer, rotationBuffer);
 
             // follow path formed by waypoints
-            Path path = new Path(start, end);
-            path.init();
-            path.followPath(robot.drive, robot.odometry);
-
-            // wait at home for a second
-            sleep(1000);
+            PurePursuitCommand command = new PurePursuitCommand(
+                    robot.drive, robot.odometry, start, end);
+            RunCommand(command, "return home");
         }
+    }
+
+    // run command linearly
+    public void RunCommand(PurePursuitCommand command, String state) {
+
+        // follow path
+        command.schedule();
+        while (opModeIsActive() && !command.isFinished()) DebugFull(state);
+
+        // end robot movement
+        command.end(true);
+        robot.drive.stop();
+
+        // wait a second
+        if (opModeIsActive()) sleep(1000);
+    }
+
+    // debug program state with telemetry
+    public void DebugPartial(String state) {
+
+        telemetry.addData("state", state);
+        telemetry.update();
+    }
+
+    // debug info on bot with telemetry
+    public void DebugFull(String state) {
+
+        telemetry.addData("state", state);
+        telemetry.addData("point count", recording.size());
+        telemetry.addData("current pose", robot.odometry.getPose());
+        telemetry.update();
     }
 }

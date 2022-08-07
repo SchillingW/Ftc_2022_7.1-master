@@ -45,6 +45,6 @@ public class PursuitBotAuto extends LinearOpMode {
         path.init();
 
         // make bot follow path
-        path.followPath(robot.drive, robot.odometry);
+        //path.followPath(robot.drive, robot.odometry);
     }
 }

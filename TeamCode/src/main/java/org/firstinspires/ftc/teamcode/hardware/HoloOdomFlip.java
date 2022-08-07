@@ -16,8 +16,9 @@ public class HoloOdomFlip extends HolonomicOdometry {
     private double centerWheelOffset;
 
     // same constructor format
-    public HoloOdomFlip(DoubleSupplier leftEncoder, DoubleSupplier rightEncoder,
-                             DoubleSupplier horizontalEncoder, double trackWidth, double centerWheelOffset) {
+    public HoloOdomFlip(
+            DoubleSupplier leftEncoder, DoubleSupplier rightEncoder,
+            DoubleSupplier horizontalEncoder, double trackWidth, double centerWheelOffset) {
 
         // call super constructor and manually initialize variables on this level
         super (leftEncoder, rightEncoder, horizontalEncoder, trackWidth, centerWheelOffset);

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.botconfigs;
 
+import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -24,7 +25,7 @@ public class PursuitBot {
     public Motor motorBR;
 
     // odometry device
-    public HoloOdomFlip odometry;
+    public OdometrySubsystem odometry;
     public DoubleSupplier encoderL;
     public DoubleSupplier encoderR;
     public DoubleSupplier encoderH;
@@ -56,16 +57,15 @@ public class PursuitBot {
         encoderL = getSupplier(motorFL, -1);
         encoderR = getSupplier(motorFR, 1);
         encoderH = getSupplier(motorBL, -1);
-        odometry = new HoloOdomFlip(
+        odometry = new OdometrySubsystem(new HoloOdomFlip(
                 encoderL, encoderR, encoderH,
-                encoderTrackWidth, encoderWheelOffset);
+                encoderTrackWidth, encoderWheelOffset));
 
         // orient to home
         motorFL.resetEncoder();
         motorFR.resetEncoder();
         motorBL.resetEncoder();
         motorBR.resetEncoder();
-        odometry.updatePose();
     }
 
     // return double supplier representing motor value in inches

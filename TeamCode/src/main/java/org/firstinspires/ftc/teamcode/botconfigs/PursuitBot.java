@@ -13,7 +13,7 @@ import java.util.function.DoubleSupplier;
 public class PursuitBot {
 
     // debugging device
-    public  Telemetry tele;
+    public Telemetry tele;
 
     // mecanum wheel drive train
     public MecanumDrive drive;

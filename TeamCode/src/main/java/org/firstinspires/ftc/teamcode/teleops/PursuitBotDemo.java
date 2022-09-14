@@ -67,6 +67,9 @@ public class PursuitBotDemo extends LinearOpMode {
                 // debug
                 DebugFull("record path");
 
+                // update odometry system
+                robot.odometry.update();
+
                 // drive based on controller input
                 robot.drive.driveRobotCentric(
                         gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);

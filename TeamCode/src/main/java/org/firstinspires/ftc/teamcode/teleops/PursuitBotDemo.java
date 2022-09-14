@@ -124,7 +124,7 @@ public class PursuitBotDemo extends LinearOpMode {
 
             // create start and end waypoints from current pose to origin pose
             Waypoint start = new StartWaypoint(robot.odometry.getPose());
-            Waypoint end = new EndWaypoint(new Pose2d(),
+            Waypoint end = new EndWaypoint(new Pose2d(0, 0, robot.odometry.getPose().getRotation()),
                     movementSpeed, turnSpeed, followRadius, positionBuffer, rotationBuffer);
 
             // follow path formed by waypoints

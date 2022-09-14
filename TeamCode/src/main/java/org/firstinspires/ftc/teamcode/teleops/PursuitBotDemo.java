@@ -139,6 +139,7 @@ public class PursuitBotDemo extends LinearOpMode {
 
         // follow path
         command.schedule();
+        command.execute();
         while (opModeIsActive() && !command.isFinished()) DebugFull(state);
 
         // end robot movement

@@ -126,14 +126,11 @@ public class PursuitBotDemo extends LinearOpMode {
             Waypoint start = new StartWaypoint(robot.odometry.getPose());
             Waypoint end = new EndWaypoint(new Pose2d(),
                     movementSpeed, turnSpeed, followRadius, positionBuffer, rotationBuffer);
-            telemetry.addData("wavepoint", new Pose2d());
-            telemetry.update();
-            sleep(3000);
+
             // follow path formed by waypoints
             PurePursuitCommand command = new PurePursuitCommand(
                     robot.drive, robot.odometry, start, end);
             RunCommand(command, "return home");
-            //return home
         }
     }
 
@@ -171,6 +168,9 @@ public class PursuitBotDemo extends LinearOpMode {
         telemetry.addData("state", state);
         telemetry.addData("point count", recording.size());
         telemetry.addData("current pose", robot.odometry.getPose());
+        telemetry.addData("encoder vertical left", robot.encoderL.getAsDouble());
+        telemetry.addData("encoder vertical right", robot.encoderR.getAsDouble());
+        telemetry.addData("encoder horizontal", robot.encoderH.getAsDouble());
         telemetry.update();
     }
 }

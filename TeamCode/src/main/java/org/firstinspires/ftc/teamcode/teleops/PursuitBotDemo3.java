@@ -5,7 +5,6 @@ import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.purepursuit.Waypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.EndWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.GeneralWaypoint;
-import com.arcrobotics.ftclib.purepursuit.waypoints.PointTurnWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.StartWaypoint;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -103,8 +102,8 @@ public class PursuitBotDemo3 extends LinearOpMode {
 
             // iterate through recorded poses and convert to waypoints
             for (int i = 0; i < recording.size() - 1; i++) {
-                points[i + 1] = new PointTurnWaypoint(recording.get(i),
-                        movementSpeed, turnSpeed, followRadius, positionBuffer, rotationBuffer);
+                points[i + 1] = new GeneralWaypoint(recording.get(i),
+                        movementSpeed, turnSpeed, followRadius);
             }
 
             // follow path formed by waypoints

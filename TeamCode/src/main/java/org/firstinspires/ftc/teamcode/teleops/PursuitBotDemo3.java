@@ -164,6 +164,7 @@ public class PursuitBotDemo3 extends LinearOpMode {
                         while(currentRotation.getDegrees() >= 0.0)
                         {
                             robot.drive.driveRobotCentric(0.0, 0.0, -0.1);
+                            robot.odometry.update();
                         }
                     }
 
@@ -172,6 +173,7 @@ public class PursuitBotDemo3 extends LinearOpMode {
                         while(currentRotation.getDegrees() <= 0.0)
                         {
                             robot.drive.driveRobotCentric(0.0, 0.0, 0.1);
+                            robot.odometry.update();
                         }
                     }
 

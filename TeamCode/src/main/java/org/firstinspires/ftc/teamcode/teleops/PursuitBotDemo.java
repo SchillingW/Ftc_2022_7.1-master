@@ -138,26 +138,18 @@ public class PursuitBotDemo extends LinearOpMode {
     public void RunCommand(PurePursuitCommand command, String state) {
 
         // follow path
-        command.initialize();
-
+        command.schedule();
 
         // loop while following
         while (opModeIsActive() && !command.isFinished()) {
-            if(robot.odometry.getPose().getY() <= 0)
-            {
-                command.end(true);
-                break;
-            }
-            else
-            {
-                command.execute();
-                DebugFull(state);
-            }
 
+            robot.odometry.update();
+            command.execute();
+            DebugFull(state);
         }
 
         // end robot movement
-        //command.end(true);
+        command.end(true);
         robot.drive.stop();
 
         // wait a second

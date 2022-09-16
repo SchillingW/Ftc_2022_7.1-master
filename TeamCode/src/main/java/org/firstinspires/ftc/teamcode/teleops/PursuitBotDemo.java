@@ -92,7 +92,7 @@ public class PursuitBotDemo extends LinearOpMode {
         if (opModeIsActive()) {
 
             // debug
-            DebugPartial("follow path");
+            DebugPartial("follow  path");
 
             // create start and end waypoints from current pose to last pose in recording
             Waypoint[] points = new Waypoint[recording.size() + 1];

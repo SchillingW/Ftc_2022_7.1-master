@@ -138,9 +138,7 @@ public class PursuitBotDemo extends LinearOpMode {
     public void RunCommand(PurePursuitCommand command, String state) {
 
         // follow path
-//        command.schedule();
         command.initialize();
-        command.execute();
 
         // loop while following
         while (opModeIsActive() && !command.isFinished()) {
@@ -151,14 +149,14 @@ public class PursuitBotDemo extends LinearOpMode {
             }
             else
             {
-                robot.odometry.periodic();
+                command.execute();
                 DebugFull(state);
             }
 
         }
 
         // end robot movement
-        command.end(true);
+        //command.end(true);
         robot.drive.stop();
 
         // wait a second

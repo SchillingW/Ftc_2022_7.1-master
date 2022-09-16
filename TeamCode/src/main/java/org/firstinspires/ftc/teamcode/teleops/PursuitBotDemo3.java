@@ -140,16 +140,19 @@ public class PursuitBotDemo3 extends LinearOpMode {
     public void RunCommand(PurePursuitCommand command, String state) {
 
         // follow path
-//        command.schedule();
-        command.initialize();
-        command.execute();
+        command.schedule();
 
         // loop while following
         while (opModeIsActive() && !command.isFinished()) {
 
+            command.execute();
+            robot.odometry.update();
+            DebugFull(state);
+
             //check if drivetrain is behind the origin, then correct rotation if needed.
             if(robot.odometry.getPose().getY() <= 0)
             {
+                command.end(true);
                 robot.drive.stop();
 
                 if(robot.odometry.getPose().getRotation().getDegrees() != 0.0)
@@ -179,16 +182,8 @@ public class PursuitBotDemo3 extends LinearOpMode {
 
                 }
 
-                command.end(true);
                 break;
             }
-
-            else
-            {
-                robot.odometry.periodic();
-                DebugFull(state);
-            }
-
         }
 
         // end robot movement

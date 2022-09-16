@@ -187,8 +187,8 @@ public class PursuitBotDemo3 extends LinearOpMode {
         }
 
         // end robot movement
-        command.end(true);
-        robot.drive.stop();
+        /*command.end(true);
+        robot.drive.stop();*/
 
         // wait a second
         if (opModeIsActive()) sleep(1000);

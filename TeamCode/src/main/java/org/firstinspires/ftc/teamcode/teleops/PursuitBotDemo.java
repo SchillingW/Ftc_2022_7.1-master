@@ -92,7 +92,7 @@ public class PursuitBotDemo extends LinearOpMode {
         if (opModeIsActive()) {
 
             // debug
-            DebugPartial("follow  path");
+            DebugPartial("follow path");
 
             // create start and end waypoints from current pose to last pose in recording
             Waypoint[] points = new Waypoint[recording.size() + 1];
@@ -138,7 +138,8 @@ public class PursuitBotDemo extends LinearOpMode {
     public void RunCommand(PurePursuitCommand command, String state) {
 
         // follow path
-        command.schedule();
+        command.initialize();
+
 
         // loop while following
         while (opModeIsActive() && !command.isFinished()) {
@@ -149,7 +150,6 @@ public class PursuitBotDemo extends LinearOpMode {
             }
             else
             {
-                robot.odometry.update();
                 command.execute();
                 DebugFull(state);
             }

@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode.teleops;
 
 import com.arcrobotics.ftclib.command.PurePursuitCommand;
 import com.arcrobotics.ftclib.geometry.Pose2d;
+import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.purepursuit.Waypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.EndWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.GeneralWaypoint;
+import com.arcrobotics.ftclib.purepursuit.waypoints.PointTurnWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.StartWaypoint;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -102,8 +104,8 @@ public class PursuitBotDemo3 extends LinearOpMode {
 
             // iterate through recorded poses and convert to waypoints
             for (int i = 0; i < recording.size() - 1; i++) {
-                points[i + 1] = new GeneralWaypoint(recording.get(i),
-                        movementSpeed, turnSpeed, followRadius);
+                points[i + 1] = new PointTurnWaypoint(recording.get(i),
+                        movementSpeed, turnSpeed, followRadius, positionBuffer, rotationBuffer);
             }
 
             // follow path formed by waypoints
@@ -144,11 +146,43 @@ public class PursuitBotDemo3 extends LinearOpMode {
 
         // loop while following
         while (opModeIsActive() && !command.isFinished()) {
+
+            //check if drivetrain is behind the origin, then correct rotation if needed.
             if(robot.odometry.getPose().getY() <= 0)
             {
+                robot.drive.stop();
+
+                if(robot.odometry.getPose().getRotation().getDegrees() != 0.0)
+                {
+                    Rotation2d currentRotation = robot.odometry.getPose().getRotation();
+
+                    if(currentRotation.getDegrees() >= 0.0)
+                    {
+                        while(currentRotation.getDegrees() >= 0.0)
+                        {
+                            robot.drive.driveRobotCentric(0.0, 0.0, -0.1);
+                        }
+                    }
+
+                    else if (currentRotation.getDegrees() <= 0.0)
+                    {
+                        while(currentRotation.getDegrees() <= 0.0)
+                        {
+                            robot.drive.driveRobotCentric(0.0, 0.0, 0.1);
+                        }
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+
+                }
+
                 command.end(true);
                 break;
             }
+
             else
             {
                 robot.odometry.periodic();

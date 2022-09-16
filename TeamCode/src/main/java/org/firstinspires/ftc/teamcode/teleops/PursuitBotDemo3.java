@@ -133,6 +133,7 @@ public class PursuitBotDemo3 extends LinearOpMode {
             PurePursuitCommand command = new PurePursuitCommand(
                     robot.drive, robot.odometry, start, end);
             RunCommand(command, "return home");
+
         }
     }
 
@@ -164,6 +165,8 @@ public class PursuitBotDemo3 extends LinearOpMode {
                         while(currentRotation.getDegrees() >= 0.0)
                         {
                             robot.drive.driveRobotCentric(0.0, 0.0, -0.1);
+                            robot.odometry.update();
+
                         }
                     }
 
@@ -172,6 +175,7 @@ public class PursuitBotDemo3 extends LinearOpMode {
                         while(currentRotation.getDegrees() <= 0.0)
                         {
                             robot.drive.driveRobotCentric(0.0, 0.0, 0.1);
+                            robot.odometry.update();
                         }
                     }
 
@@ -187,8 +191,8 @@ public class PursuitBotDemo3 extends LinearOpMode {
         }
 
         // end robot movement
-        command.end(true);
-        robot.drive.stop();
+        /*command.end(true);
+        robot.drive.stop();*/
 
         // wait a second
         if (opModeIsActive()) sleep(1000);

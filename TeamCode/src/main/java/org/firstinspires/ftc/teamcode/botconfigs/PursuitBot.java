@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode.botconfigs;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.HoloOdomFlip;
+import org.firstinspires.ftc.teamcode.hardware.MecDriveFlip;
 
 import java.util.function.DoubleSupplier;
 
@@ -49,13 +51,13 @@ public class PursuitBot {
         motorFR = new Motor(map, "motorFR");
         motorBL = new Motor(map, "motorBL");
         motorBR = new Motor(map, "motorBR");
-        drive = new MecanumDrive(motorFL, motorFR, motorBL, motorBR);
+        drive = new MecDriveFlip(motorFL, motorFR, motorBL, motorBR);
 
         // initialize odometry
         encoderL = getSupplier(motorFL, -1);
         encoderR = getSupplier(motorFR, 1);
         encoderH = getSupplier(motorBL, -1);
-        odometry = new OdometrySubsystem(new HoloOdomFlip(
+        odometry = new OdometrySubsystem(new HolonomicOdometry(
                 encoderL, encoderR, encoderH,
                 encoderTrackWidth, encoderWheelOffset));
 

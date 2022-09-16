@@ -72,7 +72,7 @@ public class PursuitBotDemo extends LinearOpMode {
 
                 // drive based on controller input
                 robot.drive.driveRobotCentric(
-                        gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+                        -gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
                 // add current pose to recording if b pressed
                 boolean recordInputNew = gamepad1.b;
@@ -172,8 +172,8 @@ public class PursuitBotDemo extends LinearOpMode {
         telemetry.addData("encoder vertical left", robot.encoderL.getAsDouble());
         telemetry.addData("encoder vertical right", robot.encoderR.getAsDouble());
         telemetry.addData("encoder horizontal", robot.encoderH.getAsDouble());
-        telemetry.addData("input vertical", -gamepad1.left_stick_y);
-        telemetry.addData("input horizontal", gamepad1.left_stick_x);
+        telemetry.addData("input vertical", gamepad1.left_stick_x);
+        telemetry.addData("input horizontal", -gamepad1.left_stick_y);
         telemetry.addData("input rotational", gamepad1.right_stick_x);
         telemetry.update();
     }

@@ -172,6 +172,9 @@ public class PursuitBotDemo extends LinearOpMode {
         telemetry.addData("encoder vertical left", robot.encoderL.getAsDouble());
         telemetry.addData("encoder vertical right", robot.encoderR.getAsDouble());
         telemetry.addData("encoder horizontal", robot.encoderH.getAsDouble());
+        telemetry.addData("input vertical", -gamepad1.left_stick_y);
+        telemetry.addData("input horizontal", gamepad1.left_stick_x);
+        telemetry.addData("input rotational", gamepad1.right_stick_x);
         telemetry.update();
     }
 }

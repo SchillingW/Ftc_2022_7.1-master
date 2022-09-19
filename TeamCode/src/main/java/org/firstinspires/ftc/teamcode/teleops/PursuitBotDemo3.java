@@ -225,7 +225,47 @@ public class PursuitBotDemo3 extends LinearOpMode {
 
     public void ManualOverride()
     {
+        double xPos = robot.odometry.getPose().getX();
+        double yPos = robot.odometry.getPose().getY();
 
+        if(positiveStartingX && positiveStartingY)
+        {
+            while(xPos >= 0 && yPos >= 0)
+            {
+                xPos = robot.odometry.getPose().getX();
+                yPos = robot.odometry.getPose().getY();
+                robot.drive.driveRobotCentric(-0.1, -0.1, 0.0);
+            }
+        }
+
+        if(positiveStartingX && !positiveStartingY)
+        {
+            while(xPos >= 0 && yPos <= 0)
+            {
+                xPos = robot.odometry.getPose().getX();
+                yPos = robot.odometry.getPose().getY();
+                robot.drive.driveRobotCentric(-0.1, 0.1, 0.0);
+            }
+        }
+
+        if(!positiveStartingX && positiveStartingY)
+        {
+            while(xPos <= 0 && yPos >= 0)
+            {
+                xPos = robot.odometry.getPose().getX();
+                yPos = robot.odometry.getPose().getY();
+                robot.drive.driveRobotCentric(0.1, -0.1, 0.0);
+            }
+        }
+
+        if(!positiveStartingX && !positiveStartingY)
+        {
+            while(xPos <= 0 && yPos <= 0)
+            {
+                xPos = robot.odometry.getPose().getX();
+                yPos = robot.odometry.getPose().getY();
+                robot.drive.driveRobotCentric(0.1, 0.1, 0.0);
+            }        }
     }
 
     public void RotationalCorrection()
